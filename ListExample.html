@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>List Example</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <style>
+        :root {
+          --ion-safe-area-top: 20px;
+          --ion-safe-area-bottom: 22px;
+        }
+      </style>
+</head>
+<body>
+    <ion-app>
+       
+       <ion-tabs>
+        <ion-tab tab="list">
+          <ion-header translucent>
+            <ion-toolbar>
+              <ion-title>List</ion-title>
+            </ion-toolbar>
+          </ion-header>
+
+          <ion-content fullscreen class="ion-padding" id="list">
+            
+          </ion-content>
+        </ion-tab>
+      </ion-tabs>
+    </ion-app>
+</body>
+<script>
+    function outPut() {
+      // console.log("a");
+      var param = {};
+
+      
+      $.ajax({ //ajax를 사용하여 가져온 데이터를 화면에 뿌려주기
+        url: "https://jsonplaceholder.typicode.com/photos",
+        data: param,
+        type: 'get',
+        success: function (data) {
+          //console.log(data);
+
+          var results = eval(data); // json파싱(json파싱을 eval을 사용하면 유지보수가 어려울 수 있다.)
+          //console.log(data); 데이터가 어떻게 들어오는지 보기 위한 log
+          var str = ' ';
+          $.each(results, function (i) {
+            str += '<ion-card>';
+            str += '<img src='+ results[i]["thumbnailUrl"] +'/>';
+            str += '    <ion-card-header>';
+            str += '      <ion-card-subtitle>'+ results[i]["id"] +'</ion-card-subtitle>';
+            str += '  <ion-card-title>'+ results[i]["title"] +'</ion-card-title>';
+            str += '    </ion-card-header>';
+              
+            str += '    <ion-card-content>';
+            str += '      '+ results[i]["url"];
+            str += '</ion-card-content>';
+            str += '</ion-card>';
+          });
+          $("#list").empty();//데이터를 가지고와서 화면을 만들기 전에 그 전의 결과 삭제
+          //console.log(str); 가져온 데이터를 잘 넣었는지 확인
+          $("#list").append(str);//마지막에 태그 추가
+          
+         
+        },
+        error: function () {
+          alert("error");
+        }
+      });
+    }
+  </script>
+  <script>
+    $(document).ready(function () { //처음에 화면을 로딩할 경우 아래내용 실행
+      outPut();
+    });
+  </script>
+</html>
